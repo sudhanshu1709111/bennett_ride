@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bennett Ride | Get There. Smarter.</title>
+    <meta name="description" content="Bennett Ride - Premium transportation service for Bennett University students. Track shuttles, book parking, and more.">
+    <meta name="keywords" content="Bennett University, campus transportation, shuttle tracking, parking reservation">
+    <meta name="author" content="Bennett Ride">
+    <meta property="og:title" content="Bennett Ride | Get There. Smarter.">
+    <meta property="og:description" content="Premium transportation service for Bennett University students.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bennettride.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="preloader-logo">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#0071e3" stroke-width="8" />
+                <path d="M25,50 L40,65 L75,30" fill="none" stroke="#0071e3" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="8" />
+                    <path d="M25,50 L40,65 L75,30" fill="none" stroke="currentColor" stroke  />
+                    <path d="M25,50 L40,65 L75,30" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <div>
+                    <h1>Bennett Ride</h1>
+                    <p class="tagline">Get There. Smarter.</p>
+                </div>
+            </a>
+            <nav>
+                <a href="#home">Home</a>
+                <a href="#map">Live Map</a>
+                <a href="#parking">Reserve Parking</a>
+                <a href="#track">Track Shuttle</a>
+                <a href="#feedback">Feedback</a>
+                <a href="#support">Support</a>
+            </nav>
+            <button class="theme-toggle" aria-label="Toggle dark mode">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav">
+        <div class="mobile-nav-links">
+            <a href="#home"><span class="mobile-nav-icon"><i class="fas fa-home"></i></span> Home</a>
+            <a href="#map"><span class="mobile-nav-icon"><i class="fas fa-map-marked-alt"></i></span> Live Map</a>
+            <a href="#parking"><span class="mobile-nav-icon"><i class="fas fa-parking"></i></span> Reserve Parking</a>
+            <a href="#track"><span class="mobile-nav-icon"><i class="fas fa-bus"></i></span> Track Shuttle</a>
+            <a href="#feedback"><span class="mobile-nav-icon"><i class="fas fa-comment-alt"></i></span> Feedback</a>
+            <a href="#support"><span class="mobile-nav-icon"><i class="fas fa-headset"></i></span> Support</a>
+        </div>
+    </div>
+    <div class="overlay"></div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <h2>Campus Transportation Reimagined</h2>
+                <p>Bennett Ride provides seamless transportation solutions for Bennett University students. Track shuttles in real-time, reserve parking spots, and enjoy a stress-free commute.</p>
+                <div class="hero-buttons">
+                    <a href="#map" class="btn btn-primary"><i class="fas fa-map-marked-alt"></i> View Live Map</a>
+                    <a href="#parking" class="btn btn-secondary"><i class="fas fa-parking"></i> Reserve Parking</a>
+                </div>
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-bar" placeholder="Drop Location" aria-label="Search for a location">
+                    <div class="search-results">
+                        <div class="search-result-item">
+                            <div class="search-result-icon">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div class="search-result-text">
+                                <div class="search-result-name">Block A</div>
+                                <div class="search-result-address">Academic Block, Bennett University</div>
+                            </div>
+                        </div>
+                        <div class="search-result-item">
+                            <div class="search-result-icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <div class="search-result-text">
+                                <div class="search-result-name">Hostel C</div>
+                                <div class="search-result-address">Student Residence, Bennett University</div>
+                            </div>
+                        </div>
+                        <div class="search-result-item">
+                            <div class="search-result-icon">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                            <div class="search-result-text">
+                                <div class="search-result-name">Food Court</div>
+                                <div class="search-result-address">Main Campus, Bennett University</div>
+                            </div>
+                        </div>
+                        <div class="search-error">
+                            <i class="fas fa-exclamation-circle"></i> No locations found. Please try a different search.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Map Section -->
+        <section class="section map-section" id="map">
+            <div class="container">
+                <h2 class="section-title">Live Map</h2>
+                <p class="section-subtitle">Track shuttles and cabs in real-time around Bennett University campus. Never miss a ride again.</p>
+                <div class="map-container">
+                    <div id="map"></div>
+                    <div class="map-overlay">
+                        <h3>Map Legend</h3>
+                        <div class="map-legend">
+                            <div class="legend-item">
+                                <div class="legend-color legend-shuttle"></div>
+                                <span>Campus Shuttle</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color legend-cab"></div>
+                                <span>Available Cab</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="section testimonials-section" id="testimonials">
+            <div class="container">
+                <h2 class="section-title">What Students Say</h2>
+                <p class="section-subtitle">Hear from fellow students who use Bennett Ride for their daily commute.</p>
+                <div class="testimonials-container">
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                                                    <div class="testimonial-info">
+                                <h4>Rohit Singh</h4>
+                                <p>Computer Science, 3rd Year</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                        </div>
+                        <p class="testimonial-text">"Bennett Ride has completely transformed how I move around campus. The real-time tracking is incredibly accurate, and I never have to guess when the next shuttle will arrive."</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                                                        <div class="testimonial-info">
+                                <h4>Priya Patel</h4>
+                                <p>Business Administration, 2nd Year</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star-half-alt star"></i>
+                        </div>
+                        <p class="testimonial-text">"The parking reservation feature is a game-changer! No more circling around looking for a spot. I can reserve my parking before I even leave my hostel."</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                                                        <div class="testimonial-info">
+                                <h4>Rahul Verma</h4>
+                                <p>Mechanical Engineering, 4th Year</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                        </div>
+                        <p class="testimonial-text">"As a final year student, I appreciate how Bennett Ride saves me time. The app is intuitive, fast, and the location suggestions are spot on!"</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                                                       <div class="testimonial-info">
+                                <h4>Neha Gupta</h4>
+                                <p>Biotechnology, 2nd Year</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                        </div>
+                        <p class="testimonial-text">"The night shuttle service has made me feel so much safer when I'm studying late at the library. I can track exactly when it's coming and plan accordingly."</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                                                        <div class="testimonial-info">
+                                <h4>Vikram Singh</h4>
+                                <p>Law, 3rd Year</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="far fa-star star"></i>
+                        </div>
+                        <p class="testimonial-text">"Bennett Ride has been reliable for the most part. Occasionally there are delays, but the real-time tracking helps me plan around them. Great service overall."</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                                                       <div class="testimonial-info">
+                                <h4>Ananya Reddy</h4>
+                                <p>Media & Communication, 1st Year</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                        </div>
+                        <p class="testimonial-text">"As a first-year student, Bennett Ride helped me navigate the campus easily. The interface is so intuitive that I was using it like a pro from day one!"</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                                                       <div class="testimonial-info">
+                                <h4>Karan Malhotra</h4>
+                                <p>Economics, 3rd Year</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star-half-alt star"></i>
+                        </div>
+                        <p class="testimonial-text">"The cab sharing feature has saved me so much money! Finding other students going to the same destination is super easy with Bennett Ride."</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                                                       <div class="testimonial-info">
+                                <h4>Riya Sharma</h4>
+                                <p>Architecture, 4th Year</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                        </div>
+                        <p class="testimonial-text">"I love how Bennett Ride integrates with my calendar. It reminds me when to leave for class based on the current shuttle schedule. Such a time-saver!"</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                                                       <div class="testimonial-info">
+                                <h4>Aditya Kumar</h4>
+                                <p>Physics, 2nd Year</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                        </div>
+                        <p class="testimonial-text">"The emergency button feature gives me peace of mind, especially during late hours. Bennett Ride is not just convenient, it's also looking out for our safety."</p>
+                    </div>
+                </div>
+                <div class="testimonials-more">
+                    <a href="#" class="more-link">See 50 more reviews</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Info Banner -->
+        <section class="info-banner">
+            <div class="container">
+                <div class="info-banner-content">
+                    <h3>Need Assistance?</h3>
+                    <p>Our support team is available 24/7 to help you with any questions or issues you might have.</p>
+                    <div class="info-banner-number">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>1800 103 8484</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Parking Section -->
+        <section class="section parking-section" id="parking">
+            <div class="container">
+                <h2 class="section-title">Reserve Parking</h2>
+                <p class="section-subtitle">Secure your parking spot in advance and save time. No more circling around looking for a space.</p>
+                <div class="parking-container">
+                    <div class="parking-info">
+                        <h3>Hassle-Free Parking</h3>
+                        <p>Bennett Ride's parking reservation system allows you to book a spot for your vehicle in advance. Simply select your vehicle type, choose a date and time, and you're all set!</p>
+                        <p>Benefits include:</p>
+                        <ul>
+                            <li>Guaranteed parking spot</li>
+                            <li>Reduced time spent searching</li>
+                            <li>Priority locations near your destination</li>
+                            <li>Flexible booking options</li>
+                        </ul>
+                    </div>
+                    <div class="parking-form">
+                        <h4>Book Your Spot</h4>
+                        <form id="parkingForm">
+                            <div class="vehicle-options">
+                                <div class="vehicle-option">
+                                    <input type="radio" id="bike" name="vehicle" value="bike" checked>
+                                    <label for="bike">
+                                        <i class="fas fa-motorcycle vehicle-icon"></i>
+                                        <span>Bike</span>
+                                    </label>
+                                </div>
+                                <div class="vehicle-option">
+                                    <input type="radio" id="car" name="vehicle" value="car">
+                                    <label for="car">
+                                        <i class="fas fa-car vehicle-icon"></i>
+                                        <span>Car</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="date-time-picker">
+                                <div class="form-group">
+                                    <label for="date">Date</label>
+                                    <input type="date" id="date" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="time">Time Slot</label>
+                                    <select id="time" class="form-control" required>
+                                        <option value="">Select a time slot</option>
+                                        <option value="morning">Morning (8 AM - 12 PM)</option>
+                                        <option value="afternoon">Afternoon (12 PM - 4 PM)</option>
+                                        <option value="evening">Evening (4 PM - 8 PM)</option>
+                                        <option value="night">Night (8 PM - 12 AM)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Book Now</button>
+                            <div class="booking-success">
+                                <i class="fas fa-check-circle"></i>
+                                <h4>Booking Confirmed!</h4>
+                                <p>Your parking spot has been reserved. You'll receive a confirmation email shortly.</p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feedback Section -->
+        <section class="section feedback-section" id="feedback">
+            <div class="container">
+                <h2 class="section-title">We Value Your Feedback</h2>
+                <p class="section-subtitle">Help us improve Bennett Ride by sharing your thoughts and suggestions.</p>
+                <div class="feedback-container">
+                                       <form class="feedback-form">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" class="form-control" placeholder="Your name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" class="form-control" placeholder="Your email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="suggestion">Suggestion</label>
+                            <textarea id="suggestion" class="form-control" placeholder="Share your thoughts with us" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Feedback</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="8" />
+                            <path d="M25,50 L40,65 L75,30" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <h2>Bennett Ride</h2>
+                    </div>
+                    <p>Bennett Ride is the premier transportation solution for Bennett University students. We provide real-time shuttle tracking, parking reservations, and more to make your campus commute seamless.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#map">Live Map</a></li>
+                        <li><a href="#parking">Reserve Parking</a></li>
+                        <li><a href="#track">Track Shuttle</a></li>
+                        <li><a href="#feedback">Feedback</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                        <li><a href="#help">Help Center</a></li>
+                        <li><a href="#terms">Terms of Service</a></li>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Download</h3>
+                    <ul>
+                        <li><a href="#">iOS App</a></li>
+                        <li><a href="#">Android App</a></li>
+                        <li><a href="#">Campus Map</a></li>
+                        <li><a href="#">Shuttle Schedule</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Bennett Ride. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
